@@ -3,7 +3,9 @@
     {
       "id": "1",
       "title": "Bloodborne",
-      "platforms": ["PS4"]
+      "platforms": [
+        "PS4"
+      ]
     },
     {
       "id": "2",
@@ -20,7 +22,20 @@
     {
       "id": "3",
       "title": "Devil May Cry 3",
-      "platforms": ["PS2", "PC"]
+      "platforms": [
+        "PS2",
+        "PC"
+      ]
+    },
+    {
+      "id": "028f",
+      "title": "Dark Souls III",
+      "plot": "In Lothric, a bell tolls to signal that the First Flame, responsible for maintaining the Age of Fire, is dying out. As has happened many times before, the coming of the Age of Dark produces the undead: cursed beings that rise after death. The Age of Fire can be prolonged by linking the fire, a ritual in which great lords and heroes sacrifice their souls to rekindle the First Flame.",
+      "platforms": [
+        "PS4",
+        "Xbox One",
+        "PC"
+      ]
     }
   ]
 }

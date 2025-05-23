@@ -1,7 +1,76 @@
-import { CheckIcon, PlusIcon } from "lucide-react";
-import { Checkbox, Dialog } from "radix-ui";
+"use client";
+
+import { PlusIcon } from "lucide-react";
+import { Dialog } from "radix-ui";
+import TextInput from "./TextInput";
+import CheckboxInput from "./CheckboxInput";
+import { useForm, Controller } from "react-hook-form";
+
+interface FormData {
+  title: string;
+  plot: string;
+  platforms: {
+    ps4: boolean;
+    ps5: boolean;
+    xboxOne: boolean;
+    xboxSeries: boolean;
+    pc: boolean;
+    switch: boolean;
+  };
+}
+
+const platformOptions = [
+  { label: "PS4", key: "ps4" },
+  { label: "PS5", key: "ps5" },
+  { label: "Xbox One", key: "xboxOne" },
+  { label: "Xbox Series X|S", key: "xboxSeries" },
+  { label: "PC", key: "pc" },
+  { label: "Nintendo Switch", key: "switch" },
+] as const;
 
 export default function AddGameModal() {
+  const { register, handleSubmit, control } = useForm<FormData>();
+
+  const onSubmit = async (data: FormData) => {
+    const selectedPlatforms = Object.entries(data.platforms)
+      .filter(([_, checked]) => checked)
+      .map(([key]) => {
+        switch (key) {
+          case "ps4":
+            return "PS4";
+          case "ps5":
+            return "PS5";
+          case "xboxOne":
+            return "Xbox One";
+          case "xboxSeries":
+            return "Xbox Series X|S";
+          case "switch":
+            return "Nintendo Switch";
+          case "pc":
+            return "PC";
+          default:
+            return key;
+        }
+      });
+
+    const payload = {
+      ...data,
+      platforms: selectedPlatforms,
+    };
+
+    const response = await fetch("http://localhost:3001/games", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      console.log("aaaaaaaaa");
+    }
+  };
+
   return (
     <Dialog.Portal>
       <Dialog.Overlay />
@@ -14,83 +83,43 @@ export default function AddGameModal() {
             Register a game to your library.
           </Dialog.Description>
         </div>
-        <form className="mt-8 flex flex-col gap-4">
+        <form
+          className="mt-8 flex flex-col gap-4"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <fieldset className="flex flex-col">
-            <label className="text-purple-600 font-semibold" htmlFor="title">
-              Title
-            </label>
-            <input
-              type="text"
-              required
-              placeholder="Enter your title here..."
-              className="focus:outline-none text-black p-2 rounded"
+            <TextInput
+              labelText="Title"
+              placeholder="Dark Souls III"
+              {...register("title")}
             />
           </fieldset>
           <fieldset className="flex flex-col">
-            <label className="text-purple-600 font-semibold" htmlFor="plot">
-              Plot
-            </label>
-            <textarea
-              id="plot"
-              placeholder="A long time ago, in a galaxy far, far away"
-              className="focus:outline-none text-black resize-none p-2 rounded"
+            <TextInput
+              isTextarea
+              labelText="Plot"
+              placeholder="A long time ago, in a galaxy far, far away..."
+              {...register("plot")}
             />
           </fieldset>
           <fieldset className="flex flex-wrap gap-y-3 gap-x-2">
             <legend className="text-purple-600 font-semibold">Platform</legend>
-            <div className="flex gap-2 items-center">
-              <Checkbox.Root className="flex size-[25px] p-3 bg-white hover:bg-purple-950 appearance-none items-center justify-center rounded">
-                <Checkbox.Indicator className="text-purple-400">
-                  <CheckIcon size={15} />
-                </Checkbox.Indicator>
-              </Checkbox.Root>
-              <label htmlFor="PS4">PS4</label>
-            </div>
-            <div className="flex gap-2 items-center">
-              <Checkbox.Root className="flex size-[25px] p-3 bg-white hover:bg-purple-950 appearance-none items-center justify-center rounded">
-                <Checkbox.Indicator className="text-purple-400">
-                  <CheckIcon size={15} />
-                </Checkbox.Indicator>
-              </Checkbox.Root>
-              <label htmlFor="Xbox One">Xbox One</label>
-            </div>
-            <div className="flex gap-2 items-center">
-              <Checkbox.Root className="flex size-[25px] p-3 bg-white hover:bg-purple-950 appearance-none items-center justify-center rounded">
-                <Checkbox.Indicator className="text-purple-400">
-                  <CheckIcon size={15} />
-                </Checkbox.Indicator>
-              </Checkbox.Root>
-              <label htmlFor="Xbox Series S|X">Xbox Series S|X</label>
-            </div>
-            <div className="flex gap-2 items-center">
-              <Checkbox.Root className="flex size-[25px] p-3 bg-white hover:bg-purple-950 appearance-none items-center justify-center rounded">
-                <Checkbox.Indicator className="text-purple-400">
-                  <CheckIcon size={15} />
-                </Checkbox.Indicator>
-              </Checkbox.Root>
-              <label htmlFor="PC">PC</label>
-            </div>
-            <div className="flex gap-2 items-center">
-              <Checkbox.Root className="flex size-[25px] p-3 bg-white hover:bg-purple-950 appearance-none items-center justify-center rounded">
-                <Checkbox.Indicator className="text-purple-400">
-                  <CheckIcon size={15} />
-                </Checkbox.Indicator>
-              </Checkbox.Root>
-              <label htmlFor="PS5">PS5</label>
-            </div>
-            <div className="flex gap-2 items-center">
-              <Checkbox.Root className="flex size-[25px] p-3 bg-white hover:bg-purple-950 appearance-none items-center justify-center rounded">
-                <Checkbox.Indicator className="text-purple-400">
-                  <CheckIcon size={15} />
-                </Checkbox.Indicator>
-              </Checkbox.Root>
-              <label htmlFor="Nintendo Switch">Nintendo Switch</label>
-            </div>
+            {platformOptions.map((option) => (
+              <Controller
+                name={`platforms.${option.key}` as const}
+                key={option.label}
+                control={control}
+                render={({ field }) => (
+                  <CheckboxInput
+                    labelText={option.label}
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                )}
+              />
+            ))}
           </fieldset>
-          <button
-            type="button"
-            className="flex justify-center items-center gap-1 p-2 rounded bg-purple-600 hover:bg-purple-800 hover:cursor-pointer"
-          >
+          <button className="flex justify-center items-center gap-1 p-2 rounded bg-purple-600 hover:bg-purple-800 hover:cursor-pointer">
             <PlusIcon size={15} color="white" />
             Register Game
           </button>
