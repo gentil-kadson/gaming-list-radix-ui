@@ -7,6 +7,7 @@ export default async function Home() {
 
   return (
     <section className="flex flex-col gap-6">
+      <h1 className="text-3xl font-bold">Games Catalog</h1>
       {games.map((game) => (
         <GameCard key={game.id} game={game} />
       ))}
