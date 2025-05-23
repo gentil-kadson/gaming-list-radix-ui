@@ -1,10 +1,18 @@
+"use client";
+
 import GameCard from "@/components/GameCard";
 import Game from "@/types/GameType";
 import { CirclePlus, Gamepad } from "lucide-react";
+import { useEffect, useState } from "react";
 
-export default async function Home() {
-  const response = await fetch("http://localhost:3001/games");
-  const games: Game[] = await response.json();
+export default function Home() {
+  const [games, setGames] = useState<Game[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3001/games")
+      .then((response) => response.json())
+      .then((games) => setGames(games));
+  }, []);
 
   return (
     <>
@@ -22,7 +30,7 @@ export default async function Home() {
       </section>
       <div className="max-w-7xl m-auto flex flex-col gap-7 mt-9">
         {games.map((game) => (
-          <GameCard key={game.id} game={game} />
+          <GameCard handleChangeGames={setGames} key={game.id} game={game} />
         ))}
       </div>
     </>
