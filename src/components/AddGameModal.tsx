@@ -5,6 +5,7 @@ import { Dialog } from "radix-ui";
 import TextInput from "./TextInput";
 import CheckboxInput from "./CheckboxInput";
 import { useForm, Controller } from "react-hook-form";
+import Game from "@/types/GameType";
 
 interface FormData {
   title: string;
@@ -28,7 +29,15 @@ const platformOptions = [
   { label: "Nintendo Switch", key: "switch" },
 ] as const;
 
-export default function AddGameModal() {
+interface AddGameModalProps {
+  handleAddGame: (games: Game[]) => void;
+  handleCloseDialog: () => void;
+}
+
+export default function AddGameModal({
+  handleAddGame,
+  handleCloseDialog,
+}: AddGameModalProps) {
   const { register, handleSubmit, control } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
@@ -58,7 +67,7 @@ export default function AddGameModal() {
       platforms: selectedPlatforms,
     };
 
-    const response = await fetch("http://localhost:3001/games", {
+    let response = await fetch("http://localhost:3001/games", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -66,15 +75,16 @@ export default function AddGameModal() {
       body: JSON.stringify(payload),
     });
 
-    if (!response.ok) {
-      console.log("aaaaaaaaa");
-    }
+    response = await fetch("http://localhost:3001/games");
+    const games: Game[] = await response.json();
+    handleAddGame(games);
+    handleCloseDialog();
   };
 
   return (
     <Dialog.Portal>
       <Dialog.Overlay />
-      <Dialog.Content className="bg-neutral-800 shadow-md mx-auto flex flex-col p-8 w-full max-w-[500px] rounded-md items-center">
+      <Dialog.Content className="bg-neutral-800 shadow-md absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col p-8 w-full max-w-[500px] rounded-md items-center">
         <div className="flex flex-col justify-center items-center">
           <Dialog.Title className="text-2xl font-bold text-purple-600">
             Add Game

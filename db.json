@@ -3,8 +3,31 @@
     {
       "id": 1,
       "title": "Bloodborne",
-      "platforms": ["PS4"],
+      "platforms": [
+        "PS4"
+      ],
       "plot": "Hunt your nightmares as you search for answers in the ancient city of Yharnam, now cursed with a strange endemic illness spreading through the streets like wildfire. Danger, death and madness lurk around every corner of this dark and horrific world, and you must discover its darkest secrets in order to survive."
+    },
+    {
+      "id": "4987",
+      "title": "Clair Obscur: Expedition 33",
+      "plot": "Lead the members of Expedition 33 on their quest to destroy the Paintress so that she can never paint death again. Explore a world of wonders inspired by Belle Époque France and battle unique enemies in this turn-based RPG with real-time mechanics.",
+      "platforms": [
+        "PS5",
+        "Xbox Series X|S",
+        "PC"
+      ]
+    },
+    {
+      "id": "8a7e",
+      "title": "Dark Souls III",
+      "plot": "As fires fade and the world falls into ruin, journey into a universe filled with more colossal enemies and environments. Players will be immersed into a world of epic atmosphere and darkness through faster gameplay and amplified combat intensity. Fans and newcomers alike will get lost in the game hallmark rewarding gameplay and immersive graphics.",
+      "platforms": [
+        "PS4",
+        "Xbox One",
+        "Xbox Series X|S",
+        "PC"
+      ]
     }
   ]
 }
