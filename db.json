@@ -1,0 +1,26 @@
+{
+  "games": [
+    {
+      "id": "1",
+      "title": "Bloodborne",
+      "platforms": ["PS4"]
+    },
+    {
+      "id": "2",
+      "title": "Elden Ring",
+      "platforms": [
+        "PS4",
+        "PS5",
+        "Xbox One",
+        "Xbox Series S|X",
+        "PC",
+        "Nintendo Switch"
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Devil May Cry 3",
+      "platforms": ["PS2", "PC"]
+    }
+  ]
+}
